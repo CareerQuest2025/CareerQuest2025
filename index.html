@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Path Recommender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Lora', serif; /* Lora for general text */
+            margin: 20px;
+            background-color: #ffffff; /* White background */
+            color: #2c3e50; /* Very dark grey blue for all text */
+            line-height: 1.6;
+        }
+
+        /* Main Container Styling */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff; /* White background */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Headings Styling */
+        h1, h2 {
+            font-family: 'Merriweather', serif;
+            color: #2c3e50; /* Very dark grey blue for headings */
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            margin-top: 35px;
+            border-bottom: 2px solid #bdc3c7; /* Light grey for border */
+            padding-bottom: 10px;
+        }
+
+        /* Welcome Message */
+        #welcomeMessage {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #bdc3c7;
+        }
+
+        .tab-nav button {
+            background-color: #ecf0f1; /* Light grey */
+            color: #2c3e50; /* Very dark grey blue */
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .tab-nav button:hover {
+            background-color: #dbe0e2; /* Slightly darker grey */
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        .tab-nav button.active {
+            background-color: #3498db; /* Blue for active tab */
+            color: white; /* White text for active tab */
+            box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Form Styling */
+        .form-section {
+            background-color: #ffffff; /* White background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #bdc3c7; /* Light grey border */
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            background-color: #f8f8f8; /* Off-white for input background */
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3498db; /* Blue on focus */
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Slider Styling */
+        .slider-container {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        .slider-value {
+            font-weight: normal;
+            color: #2c3e50; /* Very dark grey blue */
+            min-width: 30px;
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            background: #ecf0f1; /* Light grey for track */
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3498db; /* Blue thumb */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #2980b9; /* Darker blue on hover */
+            transform: scale(1.1);
+        }
+
+        /* Checkbox Styling */
+        .checkbox-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            width: auto; /* Override default input width */
+            margin-bottom: 0; /* Override default input margin */
+            transform: scale(1.2); /* Make checkbox slightly larger */
+        }
+
+        /* Button Styling */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: #3498db; /* Blue */
+            color: white; /* White text for buttons for readability */
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Darker blue */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        button.secondary {
+            background-color: #95a5a6; /* Grey secondary button */
+        }
+
+        button.secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        button.tertiary {
+            background-color: #e74c3c; /* Red for clear buttons */
+        }
+
+        button.tertiary:hover {
+            background-color: #c0392b;
+        }
+
+        /* Step Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #bdc3c7; /* Light grey border */
+        }
+
+        .step-navigation button {
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        /* Results Section */
+        .results-section {
+            background-color: #ffffff; /* White background */
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+        }
+
+        .results-section h3 {
+            font-family: 'Merriweather', serif;
+            color: #2c3e50; /* Very dark grey blue */
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result-item {
+            background-color: #f8f8f8; /* Off-white for result items */
+            border: 1px solid #ecf0f1; /* Light grey border */
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .result-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .result-item h4 {
+            color: #2c3e50; /* Very dark grey blue */
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .result-item p {
+            color: #2c3e50; /* Very dark grey blue */
+            margin-bottom: 8px;
+        }
+
+        .result-item ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .result-item ul li {
+            background-color: #eff3f5; /* Very light grey for list items */
+            padding: 8px 12px;
+            border-left: 3px solid #3498db; /* Blue accent */
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 0.95em;
+            color: #2c3e50; /* Very dark grey blue */
+        }
+
+        .result-item .action-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .result-item .action-links a {
+            display: inline-block;
+            background-color: #3498db; /* Blue for action links */
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: normal;
+            transition: background-color 0.3s ease;
+        }
+
+        .result-item .action-links a:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+            text-decoration: none;
+        }
+
+        .result-item .action-links a.indeed {
+            background-color: #1769aa; /* Indeed blue */
+        }
+
+        .result-item .action-links a.indeed:hover {
+            background-color: #135585;
+        }
+
+        .result-item .action-links a.linkedin {
+            background-color: #0077B5; /* LinkedIn blue */
+        }
+
+        .result-item .action-links a.linkedin:hover {
+            background-color: #005f87;
+        }
+
+
+        .no-results-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #e74c3c; /* Red for no results */
+            padding: 20px;
+            border: 1px dashed #f5b7b1; /* Lighter dashed border */
+            border-radius: 8px;
+            background-color: #fcebeb; /* Very light red background */
+            display: none; /* Hidden by default */
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            border: 6px solid #ecf0f1; /* Light grey border */
+            border-top: 6px solid #3498db; /* Blue spinner */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+            display: none; /* Hidden by default */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .tab-nav {
+                flex-direction: column;
+            }
+
+            .tab-nav button {
+                margin-bottom: 10px;
+                border-radius: 8px;
+            }
+
+            .button-group, .step-navigation {
+                flex-direction: column;
+            }
+
+            .button-group button, .step-navigation button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Career Path Recommender</h1>
+        <p id="welcomeMessage"></p>
+
+        <div class="tab-nav">
+            <button data-tab="jobRecommender" class="active">Job Recommender</button>
+            <button data-tab="courseRecommender">Course Recommender</button>
+        </div>
+
+        <div id="jobRecommender" class="tab-content">
+            <h2>Job Recommendation</h2>
+            <div id="jobRecommenderForm">
+                <div id="jobStep0" class="form-section">
+                    <h3>Welcome! Let's find your ideal career path.</h3>
+                    <p>This recommender will guide you through a few steps to understand your preferences and suggest suitable job roles.</p>
+                    <div class="button-group">
+                        <button id="startJobRecommender">Start</button>
+                    </div>
+                </div>
+
+                <div id="jobStep1" class="form-section" style="display: none;">
+                    <h3>Step 1: Your Skills and Experience</h3>
+                    <p>Rate your proficiency (1-10) in the following areas:</p>
+
+                    <div class="slider-container">
+                        <label for="programmingSkill">Programming (Python, R, Java, etc.) <span class="slider-value" id="programmingSkillValue">5</span></label>
+                        <input type="range" id="programmingSkill" min="1" max="10" value="5">
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="mathSkill">Mathematics & Statistics <span class="slider-value" id="mathSkillValue">5</span></label>
+                        <input type="range" id="mathSkill" min="1" max="10" value="5">
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="communicationSkill">Communication & Presentation <span class="slider-value" id="communicationSkillValue">5</span></label>
+                        <input type="range" id="communicationSkill" min="1" max="10" value="5">
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="problemSolvingSkill">Problem Solving & Critical Thinking <span class="slider-value" id="problemSolvingSkillValue">5</span></label>
+                        <input type="range" id="problemSolvingSkill" min="1" max="10" value="5">
+                    </div>
+
+                    <div class="step-navigation">
+                        <button class="secondary" data-direction="prev" data-target-form="jobRecommenderForm">Back</button>
+                        <button data-direction="next" data-target-form="jobRecommenderForm">Next</button>
+                    </div>
+                </div>
+
+                <div id="jobStep2" class="form-section" style="display: none;">
+                    <h3>Step 2: Your Interests & Passions</h3>
+                    <p>Select up to 3 areas that genuinely excite you:</p>
+                    <div class="checkbox-group" id="passionCheckboxes">
+                        <label><input type="checkbox" name="passion" value="Research"> Research & Discovery</label>
+                        <label><input type="checkbox" name="passion" value="Development"> Building & Development</label>
+                        <label><input type="checkbox" name="passion" value="Analytics"> Data Analysis & Insights</label>
+                        <label><input type="checkbox" name="passion" value="Creativity"> Creativity & Innovation</label>
+                        <label><input type="checkbox" name="passion" value="Business"> Business Strategy</label>
+                        <label><input type="checkbox" name="passion" value="UserExperience"> User Experience</label>
+                        <label><input type="checkbox" name="passion" value="Security"> Cybersecurity</label>
+                        <label><input type="checkbox" name="passion" value="Infrastructure"> Cloud Infrastructure</label>
+                        <label><input type="checkbox" name="passion" value="Decentralization"> Decentralized Systems</label>
+                        <label><input type="checkbox" name="Automation"> Automation & Efficiency</label>
+                        <label><input type="checkbox" name="Societal Impact"> Societal Impact</label>
+                        <label><input type="checkbox" name="Space Exploration"> Space Exploration</label>
+                        <label><input type="checkbox" name="healthcare"> Healthcare & Well-being</label>
+                        <label><input type="checkbox" name="education"> Education & Mentorship</label>
+                        <label><input type="checkbox" name="finance"> Finance & Economics</label>
+                        <label><input type="checkbox" name="arts"> Arts & Culture</label>
+                        <label><input type="checkbox" name="construction"> Construction & Building</label>
+                        <label><input type="checkbox" name="trades"> Skilled Trades</label>
+                        <label><input type="checkbox" name="law"> Law & Justice</label>
+                        <label><input type="checkbox" name="environment"> Environment & Sustainability</label>
+                        <label><input type="checkbox" name="hospitality"> Hospitality & Food Service</label>
+                        <label><input type="checkbox" name="science"> Pure Science</label>
+                        <label><input type="checkbox" name="personalCare"> Personal Care & Services</label>
+                        <label><input type="checkbox" name="sales"> Sales & Marketing</label>
+                        <label><input type="checkbox" name="logistics"> Transportation & Logistics</label>
+                    </div>
+                    <div class="step-navigation">
+                        <button class="secondary" data-direction="prev" data-target-form="jobRecommenderForm">Back</button>
+                        <button data-direction="next" data-target-form="jobRecommenderForm">Next</button>
+                    </div>
+                </div>
+
+                <div id="jobStep3" class="form-section" style="display: none;">
+                    <h3>Step 3: Work Environment</h3>
+                    <p>What kind of work environment do you prefer?</p>
+
+                    <div class="slider-container">
+                        <label for="teamworkPref">Teamwork vs. Independent Work <span class="slider-value" id="teamworkPrefValue">5</span></label>
+                        <input type="range" id="teamworkPref" min="1" max="10" value="5">
+                        <small>1: Highly Independent, 10: Highly Collaborative</small>
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="innovationPref">Innovation vs. Stability <span class="slider-value" id="innovationPrefValue">5</span></label>
+                        <input type="range" id="innovationPref" min="1" max="10" value="5">
+                        <small>1: Predictable & Stable, 10: Fast-paced & Innovative</small>
+                    </div>
+
+                    <div class="step-navigation">
+                        <button class="secondary" data-direction="prev" data-target-form="jobRecommenderForm">Back</button>
+                        <button data-direction="next" data-target-form="jobRecommenderForm">Next</button>
+                    </div>
+                </div>
+
+                <div id="jobStep4" class="form-section" style="display: none;">
+                    <h3>Step 4: Final Touches</h3>
+                    <label for="careerGoals">Briefly describe your long-term career aspirations (optional):</label>
+                    <textarea id="careerGoals" placeholder="e.g., 'I want to lead a team developing ethical AI solutions.'"></textarea>
+
+                    <div class="button-group">
+                        <button id="generateJobRecommendations">Generate Recommendations</button>
+                        <button id="clearJobRecommenderButton" class="tertiary">Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="jobRecommendationsDiv" class="results-section">
+                <h3>Your Recommended Career Paths</h3>
+                <div id="jobRecommendationsList">
+                </div>
+                <div id="noJobResults" class="no-results-message">
+                    No job recommendations found based on your input. Please try adjusting your preferences.
+                </div>
+                <div class="button-group">
+                    <button id="restartJobRecommender" class="secondary">Restart Job Recommender</button>
+                </div>
+            </div>
+
+            <div class="loading-spinner" id="jobLoadingSpinner"></div>
+        </div>
+
+        <div id="courseRecommender" class="tab-content" style="display: none;">
+            <h2>Course Recommendation</h2>
+            <div class="form-section">
+                <h3>Find Courses for Your Dream Job</h3>
+                <label for="dreamJobSelect">Select your dream job:</label>
+                <select id="dreamJobSelect">
+                </select>
+                <label for="learningStyle">Describe your preferred learning style (optional):</label>
+                <textarea id="learningStyle" placeholder="e.g., 'I prefer hands-on projects and video tutorials.'"></textarea>
+
+                <div class="button-group">
+                    <button id="generateCourseRecommendations">Find Courses</button>
+                    <button id="clearCourseRecommenderButton" class="tertiary">Clear All</button>
+                </div>
+            </div>
+
+            <div id="courseRecommendationsDiv" class="results-section">
+                <h3>Recommended Courses</h3>
+                <div id="courseRecommendationsList">
+                </div>
+                <div id="noCourseResults" class="no-results-message">
+                    No course recommendations found for the selected job.
+                </div>
+            </div>
+
+            <div class="loading-spinner" id="courseLoadingSpinner"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const tabButtons = document.querySelectorAll('.tab-nav button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            // Job Recommender Elements
+            const jobRecommenderForm = document.getElementById('jobRecommenderForm');
+            const jobSteps = document.querySelectorAll('#jobRecommenderForm > div');
+            const startJobRecommenderButton = document.getElementById('startJobRecommender');
+            const generateJobRecommendationsButton = document.getElementById('generateJobRecommendations');
+            const jobRecommendationsDiv = document.getElementById('jobRecommendationsDiv');
+            const jobRecommendationsList = document.getElementById('jobRecommendationsList');
+            const noJobResults = document.getElementById('noJobResults');
+            const jobLoadingSpinner = document.getElementById('jobLoadingSpinner');
+            const restartJobRecommenderButton = document.getElementById('restartJobRecommender');
+            const clearJobRecommenderButton = document.getElementById('clearJobRecommenderButton');
+
+            // Course Recommender Elements
+            const dreamJobSelect = document.getElementById('dreamJobSelect');
+            const generateCourseRecommendationsButton = document.getElementById('generateCourseRecommendations');
+            const courseRecommendationsDiv = document.getElementById('courseRecommendationsDiv');
+            const courseRecommendationsList = document.getElementById('courseRecommendationsList');
+            const noCourseResults = document.getElementById('noCourseResults');
+            const courseLoadingSpinner = document.getElementById('courseLoadingSpinner');
+            const clearCourseRecommenderButton = document.getElementById('clearCourseRecommenderButton');
+
+            // Sliders
+            const programmingSkill = document.getElementById('programmingSkill');
+            const mathSkill = document.getElementById('mathSkill');
+            const communicationSkill = document.getElementById('communicationSkill');
+            const problemSolvingSkill = document.getElementById('problemSolvingSkill');
+            const teamworkPref = document.getElementById('teamworkPref');
+            const innovationPref = document.getElementById('innovationPref');
+
+            // Slider value displays
+            const programmingSkillValue = document.getElementById('programmingSkillValue');
+            const mathSkillValue = document.getElementById('mathSkillValue');
+            const communicationSkillValue = document.getElementById('communicationSkillValue');
+            const problemSolvingSkillValue = document.getElementById('problemSolvingSkillValue');
+            const teamworkPrefValue = document.getElementById('teamworkPrefValue');
+            const innovationPrefValue = document.getElementById('innovationPrefValue');
+
+            // --- Data Structures (Comprehensive) ---
+
+            // Average salaries for various job titles in India (INR per year)
+            const jobSalariesInIndia = {
+                "Accountant": "₹4,00,000",
+                "Actuary": "₹10,00,000 - ₹17,00,000",
+                "Administrative Assistant": "₹2,67,823",
+                "Advertising Manager": "₹7,00,000",
+                "Aerospace Engineer (with Astronautics focus)": "₹6,00,000",
+                "Agricultural Engineer": "₹5,00,000",
+                "Aircraft Mechanic": "₹4,65,770",
+                "Air Traffic Controller": "₹11,00,000 - ₹17,00,000",
+                "Animator": "₹4,00,000",
+                "Archaeologist": "₹5,00,000",
+                "Architect (Building)": "₹4,00,000",
+                "Art Curator": "₹3,00,000 - ₹6,00,000",
+                "Art Director": "₹7,25,000",
+                "Astronomer": "₹8,00,000 - ₹10,00,000",
+                "Automotive Engineer": "₹4,00,000",
+                "Automotive Mechanic": "₹5,97,965",
+                "Bank Teller": "₹2,47,955",
+                "Biochemist": "₹4,00,000 - ₹6,00,000",
+                "Biomedical Engineer (Traditional)": "₹4,00,000",
+                "Biostatistician": "₹6,00,000",
+                "Boilermaker": "₹7,91,760",
+                "Bookkeeper": "₹4,96,278",
+                "Bricklayer": "₹7,52,815",
+                "Broadcast Journalist": "₹4,50,000",
+                "Cabinetmaker": "₹4,51,494",
+                "Carpenter": "₹2,16,000",
+                "Cartographer": "₹4,00,000",
+                "Chef": "₹3,60,000",
+                "Chemical Engineer": "₹4,00,000 - ₹6,00,000",
+                "Chemist": "₹3,50,000 - ₹5,50,000",
+                "Civil Engineer": "₹3,50,000",
+                "Clinical Research Coordinator": "₹3,00,000",
+                "Clinical Scientist": "₹6,00,000",
+                "Compliance Officer": "₹6,00,000",
+                "Computer Hardware Engineer": "₹5,00,000",
+                "Construction Manager": "₹8,00,000",
+                "Copywriter": "₹4,00,000",
+                "Counselor": "₹3,00,000",
+                "Court Reporter": "₹7,12,171",
+                "Crane Operator": "₹6,28,882",
+                "Credit Analyst": "₹4,00,000",
+                "Criminal Investigator": "₹3,00,000 - ₹5,00,000",
+                "Customer Service Representative": "₹3,00,000",
+                "Curator": "₹4,00,000 - ₹7,00,000",
+                "Dancer": "₹3,00,000 - ₹5,00,000",
+                "Data Entry Clerk": "₹2,00,000",
+                "Database Administrator": "₹5,00,000",
+                "Dental Hygienist": "₹3,00,000",
+                "Dermatologist": "₹12,00,000",
+                "Diesel Mechanic": "₹7,04,741",
+                "Dietitian": "₹3,00,000 - ₹6,00,000",
+                "Digital Marketing Specialist": "₹4,00,000",
+                "Drywall Installer": "₹7,29,948",
+                "Economist": "₹7,00,000",
+                "Editor": "₹4,00,000",
+                "Education Administrator": "₹5,00,000 - ₹8,00,000",
+                "Electrical Engineer": "₹4,00,000",
+                "Electrician": "₹8,38,506",
+                "Elevator Installer and Repairer": "₹3,53,749",
+                "Environmental Engineer": "₹4,00,000 - ₹6,00,000",
+                "Environmental Scientist": "₹4,00,000 - ₹7,00,000",
+                "Executive Assistant": "₹3,86,419",
+                "Fashion Designer": "₹3,60,000",
+                "Film Director": "₹5,00,000 - ₹10,00,000",
+                "Financial Advisor": "₹5,00,000",
+                "Financial Analyst": "₹4,00,000",
+                "Firefighter": "₹6,00,000",
+                "Flight Attendant": "₹6,00,000",
+                "Food Scientist": "₹4,00,000",
+                "Forensic Scientist": "₹3,00,000 - ₹5,00,000",
+                "Game Designer (non-coding)": "₹7,11,000",
+                "Geologist": "₹5,00,000",
+                "General Office Clerk": "₹4,24,677",
+                "Glazier": "₹6,91,323",
+                "Graphic Designer": "₹3,00,000",
+                "Heavy Equipment Mechanic": "₹9,92,102",
+                "Heavy Equipment Operator": "₹5,48,062",
+                "Hotel Manager": "₹5,00,000 - ₹8,00,000",
+                "Human Resources Assistant": "₹2,69,825",
+                "Human Resources Manager": "₹7,00,000",
+                "HVAC Technician": "₹3,00,000",
+                "Illustrator": "₹3,66,198",
+                "Industrial Designer": "₹6,50,000",
+                "Industrial Engineer": "₹4,00,000 - ₹6,00,000",
+                "Information Security Analyst": "₹7,00,000",
+                "Interior Designer": "₹3,00,000",
+                "Interpreter and Translator": "₹4,00,000",
+                "Investment Banker": "₹10,00,000 - ₹20,00,000",
+                "Ironworker": "₹7,91,765",
+                "Jeweler": "₹20,30,000",
+                "Journalist": "₹3,50,000",
+                "Landscape Architect": "₹9,65,632",
+                "Legal Secretary": "₹5,00,771",
+                "Librarian": "₹3,00,000",
+                "Loan Officer": "₹3,50,000",
+                "Locksmith": "₹5,84,148",
+                "Machinist": "₹3,67,570",
+                "Maintenance Mechanic": "₹2,84,514",
+                "Makeup Artist": "₹4,50,000",
+                "Management Consultant": "₹10,00,000",
+                "Market Research Analyst": "₹4,00,000",
+                "Marketing Manager": "₹7,00,000",
+                "Mason": "₹7,65,570",
+                "Mechanical Engineer": "₹4,00,000",
+                "Medical Assistant": "₹2,50,000",
+                "Medical Technologist": "₹3,50,000",
+                "Millwright": "₹8,00,706",
+                "Model": "₹50,000 - ₹1,00,000 (per project)",
+                "Museum Technician": "₹3,00,000 - ₹5,00,000",
+                "Music Composer": "₹3,00,000 - ₹6,00,000",
+                "Network Administrator": "₹4,00,000",
+                "Nurse": "₹3,00,000 - ₹6,00,000",
+                "Nutritionist": "₹3,00,000 - ₹6,00,000",
+                "Occupational Therapist": "₹4,00,000 - ₹7,00,000",
+                "Operations Manager": "₹7,00,000",
+                "Optometrist": "₹4,00,000",
+                "Paralegal": "₹3,00,000",
+                "Paramedic": "₹2,50,000",
+                "Park Ranger": "₹3,00,000 - ₹5,00,000",
+                "Pathologist": "₹10,00,000",
+                "Personal Trainer": "₹2,00,000 - ₹4,00,000",
+                "Pharmacist": "₹4,00,000",
+                "Physical Therapist": "₹3,50,000",
+                "Physician Assistant": "₹4,00,000",
+                "Physicist": "₹8,00,000 - ₹10,00,000",
+                "Pilot": "₹12,00,000 - ₹20,00,000",
+                "Plumber": "₹6,00,000",
+                "Police Officer": "₹4,00,000",
+                "Post-secondary Teacher": "₹6,00,000 - ₹10,00,000",
+                "Power Plant Operator": "₹6,73,500",
+                "Preschool Teacher": "₹2,00,000",
+                "Product Manager": "₹15,00,000",
+                "Production Manager": "₹6,00,000",
+                "Psychologist": "₹4,00,000 - ₹8,00,000",
+                "Public Relations Specialist": "₹4,00,000",
+                "Radiologic Technologist": "₹3,00,000",
+                "Real Estate Agent": "₹3,00,000 - ₹6,00,000",
+                "Receptionist": "₹2,20,000",
+                "Reporter": "₹3,50,000",
+                "Research Scientist": "₹6,00,000 - ₹10,00,000",
+                "Respiratory Therapist": "₹3,00,000",
+                "Retail Sales Associate": "₹2,00,000",
+                "Robotics Engineer (Hardware)": "₹6,00,000",
+                "Roofer": "₹6,90,560",
+                "Secretary": "₹2,50,000",
+                "Social Worker": "₹3,00,000",
+                "Sociologist": "₹5,00,000",
+                "Software Developer": "₹6,00,000",
+                "Solar Panel Installer": "₹5,50,000",
+                "Sound Engineer": "₹4,00,000",
+                "Special Education Teacher": "₹3,00,000",
+                "Speech-Language Pathologist": "₹4,00,000",
+                "Statistician": "₹7,00,000",
+                "Structural Engineer": "₹5,00,000",
+                "Surgeon": "₹15,00,000 - ₹30,00,000",
+                "Surveyor": "₹4,00,000",
+                "Tax Preparer": "₹3,00,000",
+                "Teacher (School)": "₹3,00,000 - ₹5,00,000",
+                "Technical Writer": "₹5,00,000",
+                "Telecommunications Engineer": "₹4,00,000",
+                "Tool and Die Maker": "₹3,84,332",
+                "Tour Guide": "₹2,50,000",
+                "Urban Planner": "₹6,00,000",
+                "Veterinarian": "₹6,00,000",
+                "Video Editor": "₹3,50,000",
+                "Web Designer": "₹3,00,000",
+                "Welder": "₹3,00,000",
+                "Writer": "₹3,50,000",
+                "Zoologist": "₹5,00,000",
+                "AI Engineer": "₹10,00,000 - ₹25,00,000+",
+                "Machine Learning Engineer": "₹8,00,000 - ₹20,00,000+",
+                "Data Scientist": "₹7,00,000 - ₹18,00,000+",
+                "Deep Learning Engineer": "₹12,00,000 - ₹30,00,000+",
+                "NLP Engineer": "₹9,00,000 - ₹22,00,000+",
+                "Computer Vision Engineer": "₹9,00,000 - ₹22,00,000+",
+                "Robotics Engineer (AI/Software)": "₹8,00,000 - ₹20,00,000+",
+                "AI Ethicist": "₹7,00,000 - ₹15,00,000",
+                "Prompt Engineer": "₹6,00,000 - ₹15,00,000",
+                "AI Product Manager": "₹15,00,000 - ₹30,00,000+",
+                "AI Researcher": "₹10,00,000 - ₹25,00,000+",
+                "MLOps Engineer": "₹9,00,000 - ₹20,00,000+"
+            };
+
+
+            const jobRecommendations = {
+                "AI Engineer": {
+                    description: "Focuses on designing, developing, and maintaining AI systems. Requires strong programming and mathematical skills.",
+                    skills: ["Advanced Programming (Python)", "Machine Learning Frameworks (TensorFlow, PyTorch)", "Mathematics & Statistics", "Deep Learning", "Problem Solving"],
+                    interests: ["Development", "Research", "Automation", "Innovation"],
+                    workEnv: { teamwork: 8, innovation: 9 }
+                },
+                "Machine Learning Engineer": {
+                    description: "Builds and deploys machine learning models. A strong understanding of algorithms and data is crucial.",
+                    skills: ["Programming (Python, R)", "Machine Learning Algorithms", "Data Preprocessing", "Mathematics & Statistics", "Problem Solving"],
+                    interests: ["Development", "Analytics", "Automation"],
+                    workEnv: { teamwork: 7, innovation: 8 }
+                },
+                "Data Scientist": {
+                    description: "Analyzes complex datasets to extract insights and inform business decisions. Combines statistics, programming, and domain knowledge.",
+                    skills: ["Data Analysis", "Statistics", "Programming (Python, R)", "Data Visualization", "Communication"],
+                    interests: ["Analytics", "Research", "Business Strategy"],
+                    workEnv: { teamwork: 6, innovation: 7 }
+                },
+                "Deep Learning Engineer": {
+                    description: "Specializes in neural networks and deep learning models, often for tasks like image recognition and natural language processing.",
+                    skills: ["Deep Learning Frameworks", "Neural Networks", "Advanced Mathematics", "GPU Computing", "Problem Solving"],
+                    interests: ["Research", "Development", "Creativity"],
+                    workEnv: { teamwork: 7, innovation: 9 }
+                },
+                "Natural Language Processing (NLP) Engineer": {
+                    description: "Develops systems that understand and process human language. Involves linguistics, AI, and machine learning.",
+                    skills: ["NLP Libraries", "Text Preprocessing", "Machine Learning", "Linguistics", "Programming (Python)"],
+                    interests: ["Research", "Development", "Automation", "Creativity"],
+                    workEnv: { teamwork: 6, innovation: 8 }
+                },
+                "Computer Vision Engineer": {
+                    description: "Works on systems that enable computers to 'see' and interpret visual information. Requires expertise in image processing and deep learning.",
+                    skills: ["Image Processing", "Computer Vision Libraries", "Deep Learning", "Mathematics", "Programming (Python)"],
+                    interests: ["Research", "Development", "Creativity", "Automation"],
+                    workEnv: { teamwork: 7, innovation: 9 }
+                },
+                "Robotics Engineer (AI/Software)": {
+                    description: "Designs and programs intelligent robots. Blends AI algorithms with robotics control.",
+                    skills: ["Robotics Frameworks", "Control Systems", "AI Algorithms", "Programming (C++, Python)", "Problem Solving"],
+                    interests: ["Development", "Automation", "Research", "Innovation"],
+                    workEnv: { teamwork: 8, innovation: 9 }
+                },
+                "AI Ethicist": {
+                    description: "Examines the ethical implications of AI technologies, ensuring fairness, transparency, and accountability.",
+                    skills: ["Critical Thinking", "Ethics", "Philosophy", "Communication", "Policy Analysis"],
+                    interests: ["Societal Impact", "Research", "Law & Justice"],
+                    workEnv: { teamwork: 9, innovation: 6 }
+                },
+                "Prompt Engineer": {
+                    description: "Optimizes inputs (prompts) for large language models and generative AI to achieve desired outputs.",
+                    skills: ["Natural Language Understanding", "Creativity", "Experimentation", "Communication", "Problem Solving"],
+                    interests: ["Creativity", "Research", "User Experience", "Development"],
+                    workEnv: { teamwork: 6, innovation: 9 }
+                },
+                "AI Product Manager": {
+                    description: "Defines the strategy, roadmap, and features for AI products, bridging technical and business teams.",
+                    skills: ["Product Management", "Business Strategy", "Communication", "Market Research", "AI/ML Fundamentals"],
+                    interests: ["Business", "User Experience", "Creativity", "Development"],
+                    workEnv: { teamwork: 9, innovation: 8 }
+                },
+                "AI Researcher": {
+                    description: "Conducts cutting-edge research in AI, pushing the boundaries of what AI can do and publishing findings.",
+                    skills: ["Research Methodology", "Advanced Mathematics", "Programming", "Critical Thinking", "Academic Writing"],
+                    interests: ["Research", "Discovery", "Innovation"],
+                    workEnv: { teamwork: 5, innovation: 10 }
+                },
+                "MLOps Engineer": {
+                    description: "Focuses on deploying and maintaining machine learning models in production, ensuring scalability and reliability.",
+                    skills: ["DevOps", "Cloud Platforms", "ML Pipelines", "Programming", "System Design"],
+                    interests: ["Automation", "Development", "Infrastructure", "Efficiency"],
+                    workEnv: { teamwork: 8, innovation: 7 }
+                },
+                "Software Developer": {
+                    description: "Designs, develops, and maintains software applications. A fundamental role in the tech industry.",
+                    skills: ["Programming", "Software Architecture", "Problem Solving", "Debugging", "Teamwork"],
+                    interests: ["Development", "Building", "Automation"],
+                    workEnv: { teamwork: 7, innovation: 7 }
+                },
+                "Data Analyst": {
+                    description: "Collects, processes, and performs statistical analyses of data to identify trends and patterns.",
+                    skills: ["Data Cleaning", "Data Visualization", "SQL", "Excel", "Basic Statistics"],
+                    interests: ["Analytics", "Problem Solving", "Business Strategy"],
+                    workEnv: { teamwork: 6, innovation: 6 }
+                },
+                "Cybersecurity Analyst": {
+                    description: "Protects computer systems and networks from threats. Requires strong analytical and problem-solving skills.",
+                    skills: ["Network Security", "Threat Detection", "Vulnerability Assessment", "Problem Solving", "Operating Systems"],
+                    interests: ["Security", "Problem Solving", "Research"],
+                    workEnv: { teamwork: 7, innovation: 7 }
+                },
+                "Cloud Engineer": {
+                    description: "Designs, deploys, and manages cloud infrastructure and services (e.g., AWS, Azure, GCP).",
+                    skills: ["Cloud Platforms", "Networking", "System Administration", "Scripting", "Automation"],
+                    interests: ["Infrastructure", "Automation", "Development"],
+                    workEnv: { teamwork: 8, innovation: 7 }
+                },
+                "UI/UX Designer": {
+                    description: "Focuses on creating user-friendly and aesthetically pleasing interfaces for software and websites.",
+                    skills: ["User Research", "Wireframing", "Prototyping", "Graphic Design Software", "Communication"],
+                    interests: ["User Experience", "Creativity", "Design"],
+                    workEnv: { teamwork: 8, innovation: 8 }
+                },
+                "Business Analyst": {
+                    description: "Analyzes business needs and translates them into requirements for IT systems, improving processes.",
+                    skills: ["Business Process Mapping", "Requirements Gathering", "Data Analysis", "Communication", "Problem Solving"],
+                    interests: ["Business", "Analytics", "Problem Solving"],
+                    workEnv: { teamwork: 9, innovation: 6 }
+                },
+                "Technical Writer": {
+                    description: "Creates clear and concise documentation for complex technical information, such as user manuals and API guides.",
+                    skills: ["Writing", "Technical Understanding", "Clarity", "Research", "Editing"],
+                    interests: ["Communication", "Research"],
+                    workEnv: { teamwork: 5, innovation: 5 }
+                },
+                "Project Manager": {
+                    description: "Oversees projects from planning to execution, ensuring they are completed on time and within budget.",
+                    skills: ["Project Planning", "Leadership", "Communication", "Risk Management", "Organizational Skills"],
+                    interests: ["Business", "Teamwork", "Efficiency"],
+                    workEnv: { teamwork: 10, innovation: 6 }
+                },
+                "Biomedical Engineer (AI/ML Focus)": {
+                    description: "Applies AI and machine learning techniques to solve problems in biology and medicine, such as medical imaging analysis or drug discovery.",
+                    skills: ["Biomedical Engineering", "Machine Learning", "Data Analysis", "Programming", "Problem Solving"],
+                    interests: ["Research", "Healthcare", "Development", "Societal Impact"],
+                    workEnv: { teamwork: 7, innovation: 9 }
+                },
+                "Climate Modeler (AI/ML)": {
+                    description: "Uses AI and ML to develop and refine climate models, analyze climate data, and predict environmental changes.",
+                    skills: ["Climate Science", "Machine Learning", "Data Analysis", "Programming", "Scientific Computing"],
+                    interests: ["Environment & Sustainability", "Research", "Societal Impact"],
+                    workEnv: { teamwork: 6, innovation: 9 }
+                },
+                "Financial Modeler (AI/ML)": {
+                    description: "Applies AI and ML to financial data for predictive modeling, risk assessment, and algorithmic trading strategies.",
+                    skills: ["Finance", "Machine Learning", "Statistical Modeling", "Programming (Python)", "Data Analysis"],
+                    interests: ["Finance & Economics", "Analytics", "Business Strategy"],
+                    workEnv: { teamwork: 6, innovation: 8 }
+                },
+                "Sports Analytics Professional (AI/ML)": {
+                    description: "Leverages AI and ML to analyze sports performance data, develop strategies, and predict outcomes.",
+                    skills: ["Sports Science/Domain", "Data Analysis", "Machine Learning", "Statistics", "Data Visualization"],
+                    interests: ["Analytics", "Creativity", "Business Strategy"],
+                    workEnv: { teamwork: 7, innovation: 8 }
+                },
+                "Digital Marketing Specialist (AI-driven)": {
+                    description: "Uses AI tools and insights to optimize digital marketing campaigns, personalize content, and analyze consumer behavior.",
+                    skills: ["Digital Marketing", "AI Tools (e.g., for content gen, analytics)", "Data Analysis", "Creativity", "Communication"],
+                    interests: ["Sales & Marketing", "Creativity", "Analytics", "Business Strategy"],
+                    workEnv: { teamwork: 7, innovation: 8 }
+                },
+                "Smart City AI Planner": {
+                    description: "Integrates AI into urban planning for optimizing traffic, energy, public services, and overall city management.",
+                    skills: ["Urban Planning", "AI/ML Fundamentals", "Data Analysis", "Policy", "System Design"],
+                    interests: ["Societal Impact", "Environment & Sustainability", "Automation", "Business Strategy"],
+                    workEnv: { teamwork: 9, innovation: 8 }
+                },
+                "AI-powered Educator/Tutor": {
+                    description: "Develops and utilizes AI systems to personalize learning experiences, provide adaptive tutoring, and analyze student progress.",
+                    skills: ["Education", "AI/ML Fundamentals", "Curriculum Development", "Communication", "User Experience"],
+                    interests: ["Education & Mentorship", "User Experience", "Societal Impact"],
+                    workEnv: { teamwork: 8, innovation: 9 }
+                },
+                "AI in Arts/Creative Industries": {
+                    description: "Explores and implements AI tools for generating art, music, literature, or assisting in creative processes.",
+                    skills: ["Art/Creative Domain", "Generative AI", "Creativity", "Programming (optional)", "Experimentation"],
+                    interests: ["Arts & Culture", "Creativity", "Development", "Research"],
+                    workEnv: { teamwork: 6, innovation: 10 }
+                },
+                "Quantum Machine Learning Researcher": {
+                    description: "Researches and develops machine learning algorithms that leverage principles of quantum mechanics, a highly specialized and emerging field.",
+                    skills: ["Quantum Mechanics", "Machine Learning", "Advanced Mathematics", "Programming", "Research Methodology"],
+                    interests: ["Research", "Discovery", "Innovation", "Pure Science"],
+                    workEnv: { teamwork: 7, innovation: 10 }
+                },
+                "Ethical Hacker (AI Focus)": {
+                    description: "Uses AI-powered tools and techniques to identify vulnerabilities in systems and networks, enhancing cybersecurity defenses.",
+                    skills: ["Cybersecurity", "Network Penetration Testing", "AI/ML Fundamentals", "Problem Solving", "Ethical Hacking Tools"],
+                    interests: ["Security", "Problem Solving", "Research"],
+                    workEnv: { teamwork: 6, innovation: 8 }
+                }
+            };
+
+
+            const courseRecommendations = {
+                "AI Engineer": [
+                    { title: "Deep Learning Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/deep-learning" },
+                    { title: "Applied AI with DeepLearning", provider: "IBM (Coursera)", link: "https://www.coursera.org/learn/applied-ai-with-deeplearning" },
+                    { title: "AI Engineering Professional Certificate", provider: "IBM (Coursera)", link: "https://www.coursera.org/professional-certificates/ai-engineering" },
+                    { title: "Full Stack Deep Learning", provider: "Full Stack Deep Learning", link: "https://fullstackdeeplearning.com/" },
+                    { title: "TensorFlow Developer Professional Certificate", provider: "Google (Coursera)", link: "https://www.coursera.org/professional-certificates/tensorflow-developer" }
+                ],
+                "Machine Learning Engineer": [
+                    { title: "Machine Learning Engineering for Production (MLOps) Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/machine-learning-engineering-for-production-mlops" },
+                    { title: "Applied Machine Learning in Python", provider: "University of Michigan (Coursera)", link: "https://www.coursera.org/learn/python-machine-learning" },
+                    { title: "Machine Learning Crash Course", provider: "Google Developers", link: "https://developers.google.com/machine-learning/crash-course" },
+                    { title: "Machine Learning with Python", provider: "IBM (Coursera)", link: "https://www.coursera.org/learn/machine-learning-with-python" },
+                    { title: "Practical Machine Learning", provider: "Johns Hopkins University (Coursera)", link: "https://www.coursera.org/learn/practical-machine-learning" }
+                ],
+                "Data Scientist": [
+                    { title: "IBM Data Science Professional Certificate", provider: "IBM (Coursera)", link: "https://www.coursera.org/professional-certificates/ibm-data-science" },
+                    { title: "Google Data Analytics Professional Certificate", provider: "Google (Coursera)", link: "https://www.coursera.org/professional-certificates/google-data-analytics" },
+                    { title: "Data Scientist with Python Track", provider: "DataCamp", link: "https://www.datacamp.com/tracks/data-scientist-with-python" },
+                    { title: "R Programming", provider: "Johns Hopkins University (Coursera)", link: "https://www.coursera.org/learn/r-programming" },
+                    { title: "SQL for Data Science", provider: "IBM (Coursera)", link: "https://www.coursera.org/learn/sql-for-data-science" }
+                ],
+                "Deep Learning Engineer": [
+                    { title: "Deep Learning Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/deep-learning" },
+                    { title: "Convolutional Neural Networks in TensorFlow", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/learn/convolutional-neural-networks-tensorflow" },
+                    { title: "Recurrent Neural Networks in TensorFlow", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/learn/recurrent-neural-networks-tensorflow" },
+                    { title: "Generative Adversarial Networks (GANs) Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/generative-adversarial-networks-gans" }
+                ],
+                "Natural Language Processing (NLP) Engineer": [
+                    { title: "Natural Language Processing Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/natural-language-processing" },
+                    { title: "Applied Text Mining in Python", provider: "University of Michigan (Coursera)", link: "https://www.coursera.org/learn/applied-text-mining-in-python" },
+                    { title: "NLP with Python for Machine Learning Essential Training", provider: "LinkedIn Learning", link: "https://www.linkedin.com/learning/nlp-with-python-for-machine-learning-essential-training" }
+                ],
+                "Computer Vision Engineer": [
+                    { title: "Deep Learning in Computer Vision", provider: "Coursera (National Research University Higher School of Economics)", link: "https://www.coursera.org/learn/deep-learning-in-computer-vision" },
+                    { title: "Computer Vision Basics", provider: "Coursera (University at Buffalo)", link: "https://www.coursera.org/learn/computer-vision-basics" },
+                    { title: "Applied Computer Vision with Deep Learning", provider: "IBM (Coursera)", link: "https://www.coursera.org/learn/applied-computer-vision-with-deep-learning" }
+                ],
+                "Robotics Engineer (AI/Software)": [
+                    { title: "Modern Robotics, Course 1: Foundations of Robot Motion", provider: "Northwestern University (Coursera)", link: "https://www.coursera.org/learn/modern-robotics-course1-foundations" },
+                    { title: "Robotics: Aerial Robotics", provider: "University of Pennsylvania (Coursera)", link: "https://www.coursera.org/learn/aerial-robotics" },
+                    { title: "AI for Robotics", provider: "Udacity (Free Course)", link: "https://www.udacity.com/course/ai-for-robotics--cs373" }
+                ],
+                "AI Ethicist": [
+                    { title: "Responsible AI: Principles and Practice", provider: "Google (Coursera)", link: "https://www.coursera.org/learn/responsible-ai" },
+                    { title: "Ethics in AI and Big Data", provider: "The University of Edinburgh (Coursera)", link: "https://www.coursera.org/learn/ethics-ai-big-data" },
+                    { title: "AI Ethics: Global Perspectives", provider: "LinuxFoundationX (edX)", link: "https://www.edx.org/course/ai-ethics-global-perspectives" }
+                ],
+                "Prompt Engineer": [
+                    { title: "Prompt Engineering for ChatGPT", provider: "Coursera (Vanderbilt University)", link: "https://www.coursera.org/learn/prompt-engineering-for-chatgpt" },
+                    { title: "Generative AI with Large Language Models", provider: "Coursera (DeepLearning.AI & Google Cloud)", link: "https://www.coursera.org/learn/generative-ai-with-llms" },
+                    { title: "Introduction to Prompt Engineering", provider: "DataCamp", link: "https://www.datacamp.com/courses/introduction-to-prompt-engineering" }
+                ],
+                "AI Product Manager": [
+                    { title: "AI Product Management Specialization", provider: "Coursera (Duke University)", link: "https://www.coursera.org/specializations/ai-product-management" },
+                    { title: "Digital Product Management", provider: "University of Virginia (Coursera)", link: "https://www.coursera.org/specializations/digital-product-management" },
+                    { title: "Product Management: Building a Product Roadmap", provider: "LinkedIn Learning", link: "https://www.linkedin.com/learning/product-management-building-a-product-roadmap" }
+                ],
+                "AI Researcher": [
+                    { title: "Mathematics for Machine Learning Specialization", provider: "Imperial College London (Coursera)", link: "https://www.coursera.org/specializations/mathematics-for-machine-learning" },
+                    { title: "Machine Learning (Stanford University)", provider: "Coursera", link: "https://www.coursera.org/learn/machine-learning" },
+                    { title: "Deep Learning Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/deep-learning" }
+                ],
+                "MLOps Engineer": [
+                    { title: "Machine Learning Engineering for Production (MLOps) Specialization", provider: "Coursera (DeepLearning.AI)", link: "https://www.coursera.org/specializations/machine-learning-engineering-for-production-mlops" },
+                    { title: "DevOps, Cloud, and Agile Foundations Specialization", provider: "IBM (Coursera)", link: "https://www.coursera.org/specializations/devops-cloud-agile" },
+                    { title: "Google Cloud Professional Machine Learning Engineer", provider: "Google (Coursera)", link: "https://www.coursera.org/professional-certificates/google-cloud-machine-learning-engineer" }
+                ],
+                "Software Developer": [
+                    { title: "Python for Everybody Specialization", provider: "University of Michigan (Coursera)", link: "https://www.coursera.org/specializations/python" },
+                    { title: "Introduction to Computer Science and Programming Using Python", provider: "MIT (edX)", link: "https://www.edx.org/course/introduction-to-computer-science-and-programming-using-python" },
+                    { title: "Full Stack Web Development with React", provider: "Hong Kong University of Science and Technology (Coursera)", link: "https://www.coursera.org/specializations/full-stack-react" }
+                ],
+                "Data Analyst": [
+                    { title: "Google Data Analytics Professional Certificate", provider: "Google (Coursera)", link: "https://www.coursera.org/professional-certificates/google-data-analytics" },
+                    { title: "Excel Skills for Business Specialization", provider: "Macquarie University (Coursera)", link: "https://www.coursera.org/specializations/excel-skills-for-business" },
+                    { title: "SQL for Data Science", provider: "IBM (Coursera)", link: "https://www.coursera.org/learn/sql-for-data-science" }
+                ],
+                "Cybersecurity Analyst": [
+                    { title: "IBM Cybersecurity Analyst Professional Certificate", provider: "IBM (Coursera)", link: "https://www.coursera.org/professional-certificates/ibm-cybersecurity-analyst" },
+                    { title: "Introduction to Cybersecurity", provider: "New York University (Coursera)", link: "https://www.coursera.org/learn/introduction-to-cybersecurity" },
+                    { title: "CompTIA Security+", provider: "Various Platforms (e.g., Udemy, Sybex)", link: "https://www.comptia.org/certifications/security" }
+                ],
+                "Cloud Engineer": [
+                    { title: "AWS Cloud Practitioner Essentials", provider: "Amazon Web Services", link: "https://aws.amazon.com/training/digital/aws-cloud-practitioner-essentials/" },
+                    { title: "Google Cloud Digital Leader Training", provider: "Google Cloud", link: "https://cloud.google.com/certification/cloud-digital-leader" },
+                    { title: "Microsoft Azure Fundamentals AZ-900", provider: "Microsoft Learn", link: "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/" }
+                ],
+                "UI/UX Designer": [
+                    { title: "Google UX Design Professional Certificate", provider: "Google (Coursera)", link: "https://www.coursera.org/professional-certificates/google-ux-design" },
+                    { title: "Introduction to User Experience Design", provider: "Georgia Tech (Coursera)", link: "https://www.coursera.org/learn/user-experience-design" },
+                    { title: "UI/UX Design Specialization", provider: "California Institute of the Arts (Coursera)", link: "https://www.coursera.org/specializations/ui-ux-design" }
+                ],
+                "Business Analyst": [
+                    { title: "Business Analyst Nanodegree Program", provider: "Udacity", link: "https://www.udacity.com/course/business-analyst-nanodegree--nd043" },
+                    { title: "Business Analysis Fundamentals", provider: "Simplilearn", link: "https://www.simplilearn.com/business-analysis-fundamentals-certification-training-course" },
+                    { title: "Project Management & Other Business Tools", provider: "University of California, Irvine (Coursera)", link: "https://www.coursera.org/specializations/project-management-business-tools" }
+                ],
+                "Technical Writer": [
+                    { title: "Technical Writing: Structure and Design", provider: "University of Colorado Boulder (Coursera)", link: "https://www.coursera.org/learn/technical-writing-structure-design" },
+                    { title: "API Documentation: A Practical Guide", provider: "Udemy", link: "https://www.udemy.com/course/api-documentation-practical-guide/" },
+                    { title: "Technical Writing Specialization", provider: "Moscow Institute of Physics and Technology (Coursera)", link: "https://www.coursera.org/specializations/technical-writing" }
+                ],
+                "Project Manager": [
+                    { title: "Google Project Management Professional Certificate", provider: "Google (Coursera)", link: "https://www.coursera.org/professional-certificates/google-project-management" },
+                    { title: "PMP Certification Training Course", provider: "Simplilearn", link: "https://www.simplilearn.com/project-management-professional-pmp-certification-training-course" },
+                    { title: "Agile with Atlassian Jira", provider: "Atlassian (Coursera)", link: "https://www.coursera.org/learn/agile-atlassian-jira" }
+                ]
+            };
+
+
+            let currentJobStep = 0;
+            const jobFormStates = {}; // To store form data for each job step
+
+            // --- Helper Functions ---
+
+            function setWelcomeMessage() {
+                const now = new Date();
+                const hours = now.getHours();
+                let greeting;
+
+                if (hours >= 5 && hours < 12) {
+                    greeting = "Good morning";
+                } else if (hours >= 12 && hours < 18) {
+                    greeting = "Good afternoon";
+                } else {
+                    greeting = "Good evening";
+                }
+
+                welcomeMessage.textContent = `${greeting}! Get personalized AI career recommendations.`;
+            }
+
+            function showTab(tabId) {
+                tabButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.tab === tabId);
+                });
+                tabContents.forEach(content => {
+                    content.style.display = (content.id === tabId) ? 'block' : 'none';
+                });
+                // Hide results and show first step when switching tabs
+                clearAllFormsAndResults();
+            }
+
+            function showStep(stepIndex) {
+                jobSteps.forEach((step, index) => {
+                    step.style.display = (index === stepIndex) ? 'block' : 'none';
+                });
+                currentJobStep = stepIndex;
+
+                // Reset form data if going back to step 0
+                if (currentJobStep === 0) {
+                    clearJobRecommenderState();
+                }
+
+                // Hide recommendations when navigating steps
+                jobRecommendationsDiv.style.display = 'none';
+                noJobResults.style.display = 'none';
+            }
+
+            function setupWeightSliders() {
+                [programmingSkill, mathSkill, communicationSkill, problemSolvingSkill, teamworkPref, innovationPref].forEach(slider => {
+                    const valueSpan = document.getElementById(slider.id + 'Value');
+                    slider.addEventListener('input', () => {
+                        valueSpan.textContent = slider.value;
+                    });
+                    // Initialize values
+                    valueSpan.textContent = slider.value;
+                });
+            }
+
+            function setupPassionCheckboxLimit() {
+                const passionCheckboxes = document.querySelectorAll('#passionCheckboxes input[type="checkbox"]');
+                passionCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const checkedCount = document.querySelectorAll('#passionCheckboxes input[type="checkbox"]:checked').length;
+                        if (checkedCount > 3) {
+                            checkbox.checked = false; // Uncheck the last one if more than 3
+                            alert('Please select a maximum of 3 interests.');
+                        }
+                    });
+                });
+            }
+
+            function populateDreamJobsSelect() {
+                // Clear existing options
+                dreamJobSelect.innerHTML = '<option value="">Select a job...</option>';
+                const dreamJobs = Object.keys(jobRecommendations).sort(); // Sort alphabetically
+
+                dreamJobs.forEach(job => {
+                    const option = document.createElement('option');
+                    option.value = job;
+                    option.textContent = job;
+                    dreamJobSelect.appendChild(option);
+                });
+            }
+
+            function collectJobFormData() {
+                return {
+                    programmingSkill: parseInt(programmingSkill.value),
+                    mathSkill: parseInt(mathSkill.value),
+                    communicationSkill: parseInt(communicationSkill.value),
+                    problemSolvingSkill: parseInt(problemSolvingSkill.value),
+                    passions: Array.from(document.querySelectorAll('input[name="passion"]:checked')).map(cb => cb.value),
+                    teamworkPref: parseInt(teamworkPref.value),
+                    innovationPref: parseInt(innovationPref.value),
+                    careerGoals: careerGoals.value.trim()
+                };
+            }
+
+            function applyJobFormData(data) {
+                programmingSkill.value = data.programmingSkill || 5;
+                mathSkill.value = data.mathSkill || 5;
+                communicationSkill.value = data.communicationSkill || 5;
+                problemSolvingSkill.value = data.problemSolvingSkill || 5;
+                teamworkPref.value = data.teamworkPref || 5;
+                innovationPref.value = data.innovationPref || 5;
+                careerGoals.value = data.careerGoals || '';
+
+                // Update slider value displays
+                programmingSkillValue.textContent = programmingSkill.value;
+                mathSkillValue.textContent = mathSkill.value;
+                communicationSkillValue.textContent = communicationSkill.value;
+                problemSolvingSkillValue.textContent = problemSolvingSkill.value;
+                teamworkPrefValue.textContent = teamworkPref.value;
+                innovationPrefValue.textContent = innovationPref.value;
+
+                // Reset all checkboxes first
+                document.querySelectorAll('input[name="passion"]').forEach(cb => cb.checked = false);
+                // Then check the ones from data
+                (data.passions || []).forEach(passion => {
+                    const checkbox = document.querySelector(`input[name="passion"][value="${passion}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            function clearJobRecommenderState() {
+                currentJobStep = 0;
+                jobFormStates[0] = {}; // Clear state for step 0 (start screen)
+                jobFormStates[1] = {}; // Clear state for step 1
+                jobFormStates[2] = {}; // Clear state for step 2
+                jobFormStates[3] = {}; // Clear state for step 3
+                jobFormStates[4] = {}; // Clear state for step 4
+
+                // Reset all inputs to default values or empty
+                programmingSkill.value = 5;
+                mathSkill.value = 5;
+                communicationSkill.value = 5;
+                problemSolvingSkill.value = 5;
+                teamworkPref.value = 5;
+                innovationPref.value = 5;
+                careerGoals.value = '';
+
+                document.querySelectorAll('input[name="passion"]').forEach(cb => cb.checked = false);
+
+                // Update slider displays
+                programmingSkillValue.textContent = 5;
+                mathSkillValue.textContent = 5;
+                communicationSkillValue.textContent = 5;
+                problemSolvingSkillValue.textContent = 5;
+                teamworkPrefValue.textContent = 5;
+                innovationPrefValue.textContent = 5;
+
+                jobRecommendationsList.innerHTML = '';
+                jobRecommendationsDiv.style.display = 'none';
+                noJobResults.style.display = 'none';
+                showStep(0); // Go back to the start screen
+            }
+
+            function clearCourseRecommenderState() {
+                dreamJobSelect.value = '';
+                learningStyle.value = '';
+                courseRecommendationsList.innerHTML = '';
+                courseRecommendationsDiv.style.display = 'none';
+                noCourseResults.style.display = 'none';
+            }
+
+            function clearAllFormsAndResults() {
+                clearJobRecommenderState();
+                clearCourseRecommenderState();
+            }
+
+
+            // --- Event Listeners for Job Recommender ---
+
+            startJobRecommenderButton.addEventListener('click', () => {
+                showStep(1); // Move to Step 1
+                applyJobFormData(jobFormStates[1] || {}); // Load saved data for step 1
+            });
+
+
+            jobRecommenderForm.addEventListener('click', (event) => {
+                const targetButton = event.target.closest('button[data-direction]');
+                if (targetButton) {
+                    const direction = targetButton.dataset.direction;
+
+                    // Save current step's data before navigating
+                    jobFormStates[currentJobStep] = collectJobFormData();
+
+                    if (direction === 'next') {
+                        if (currentJobStep < jobSteps.length - 1) {
+                            showStep(currentJobStep + 1);
+                            applyJobFormData(jobFormStates[currentJobStep] || {}); // Load saved data for next step
+                        }
+                    } else if (direction === 'prev') {
+                        if (currentJobStep > 0) {
+                            showStep(currentJobStep - 1);
+                            applyJobFormData(jobFormStates[currentJobStep] || {}); // Load saved data for previous step
+                        }
+                        // If going back to step 0, ensure it's handled by clearJobRecommenderState implicitly
+                        if (currentJobStep === 0) {
+                             clearJobRecommenderState();
+                        }
+                    }
+                }
+            });
+
+
+            generateJobRecommendationsButton.addEventListener('click', () => {
+                jobLoadingSpinner.style.display = 'block';
+                jobRecommendationsDiv.style.display = 'none';
+                noJobResults.style.display = 'none';
+                jobRecommendationsList.innerHTML = '';
+
+                // Collect all data for the final recommendation logic
+                const userData = collectJobFormData(); // This collects data from all fields currently visible
+
+                // Simulate API call delay
+                setTimeout(() => {
+                    jobLoadingSpinner.style.display = 'none';
+                    const results = [];
+
+                    for (const jobTitle in jobRecommendations) {
+                        const job = jobRecommendations[jobTitle];
+                        let score = 0;
+
+                        // Skill matching (higher proficiency = higher score)
+                        score += (userData.programmingSkill >= 7 && job.skills.includes("Programming")) ? 2 : 0;
+                        score += (userData.mathSkill >= 7 && job.skills.includes("Mathematics & Statistics")) ? 2 : 0;
+                        score += (userData.communicationSkill >= 7 && job.skills.includes("Communication")) ? 1 : 0;
+                        score += (userData.problemSolvingSkill >= 7 && job.skills.includes("Problem Solving")) ? 2 : 0;
+
+                        // Interest matching (each matched passion adds score)
+                        userData.passions.forEach(passion => {
+                            if (job.interests.includes(passion)) {
+                                score += 3;
+                            }
+                        });
+
+                        // Work environment matching (closer preference = higher score)
+                        score -= Math.abs(userData.teamworkPref - job.workEnv.teamwork);
+                        score -= Math.abs(userData.innovationPref - job.workEnv.innovation);
+
+                        // Basic keyword matching for career goals (if provided)
+                        if (userData.careerGoals) {
+                            const goalsLower = userData.careerGoals.toLowerCase();
+                            if (goalsLower.includes("ai") && jobTitle.toLowerCase().includes("ai")) score += 5;
+                            if (goalsLower.includes("data") && jobTitle.toLowerCase().includes("data")) score += 5;
+                            if (goalsLower.includes("research") && job.interests.includes("Research")) score += 3;
+                            if (goalsLower.includes("develop") && job.interests.includes("Development")) score += 3;
+                            if (goalsLower.includes("ethics") && jobTitle.toLowerCase().includes("ethicist")) score += 5;
+                            if (goalsLower.includes("machine learning") && jobTitle.toLowerCase().includes("machine learning")) score += 5;
+                            if (goalsLower.includes("cloud") && jobTitle.toLowerCase().includes("cloud")) score += 3;
+                            if (goalsLower.includes("cybersecurity") && jobTitle.toLowerCase().includes("cybersecurity")) score += 3;
+                            if (goalsLower.includes("product") && jobTitle.toLowerCase().includes("product manager")) score += 3;
+                            if (goalsLower.includes("robotics") && jobTitle.toLowerCase().includes("robotics")) score += 3;
+                            if (goalsLower.includes("finance") && jobTitle.toLowerCase().includes("finance")) score += 3;
+                            if (goalsLower.includes("healthcare") && jobTitle.toLowerCase().includes("biomedical")) score += 3;
+                            if (goalsLower.includes("sustainability") && jobTitle.toLowerCase().includes("climate")) score += 3;
+                            if (goalsLower.includes("art") && jobTitle.toLowerCase().includes("arts")) score += 3;
+                            if (goalsLower.includes("education") && jobTitle.toLowerCase().includes("educator")) score += 3;
+                        }
+
+                        results.push({ jobTitle, score, ...job });
+                    }
+
+                    // Sort by score in descending order
+                    results.sort((a, b) => b.score - a.score);
+
+                    // Display top 5 relevant jobs (or fewer if less than 5 scored highly)
+                    const relevantResults = results.filter(r => r.score > 0).slice(0, 5);
+
+                    if (relevantResults.length > 0) {
+                        jobRecommendationsDiv.style.display = 'block';
+                        relevantResults.forEach(result => {
+                            const salary = jobSalariesInIndia[result.jobTitle] || "N/A";
+                            const item = document.createElement('div');
+                            item.className = 'result-item';
+                            item.innerHTML = `
+                                <h4>${result.jobTitle}</h4>
+                                <p><strong>Description:</strong> ${result.description}</p>
+                                <p><strong>Estimated Salary (India):</strong> ${salary} / year</p>
+                                <p><strong>Key Skills:</strong> ${result.skills.join(', ')}</p>
+                                <p><strong>Related Interests:</strong> ${result.interests.join(', ')}</p>
+                                <p><strong>Work Environment Match:</strong> Teamwork: ${result.workEnv.teamwork}/10, Innovation: ${result.workEnv.innovation}/10</p>
+                                <div class="action-links">
+                                    <a href="https://www.indeed.com/q-${encodeURIComponent(result.jobTitle)}-jobs.html" target="_blank" class="indeed">Find on Indeed</a>
+                                    <a href="https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(result.jobTitle)}" target="_blank" class="linkedin">Find on LinkedIn</a>
+                                </div>
+                            `;
+                            jobRecommendationsList.appendChild(item);
+                        });
+                    } else {
+                        noJobResults.style.display = 'block';
+                    }
+                    jobRecommendationsDiv.scrollIntoView({ behavior: 'smooth' });
+                }, 2000); // Simulate network delay
+            });
+
+            restartJobRecommenderButton.addEventListener('click', clearJobRecommenderState);
+
+
+            // --- Event Listeners for Course Recommender ---
+
+            generateCourseRecommendationsButton.addEventListener('click', () => {
+                courseLoadingSpinner.style.display = 'block';
+                courseRecommendationsDiv.style.display = 'none';
+                noCourseResults.style.display = 'none';
+                courseRecommendationsList.innerHTML = '';
+
+                const selectedJob = dreamJobSelect.value;
+                const learningStyleText = learningStyle.value.trim().toLowerCase();
+
+                setTimeout(() => {
+                    courseLoadingSpinner.style.display = 'none';
+
+                    if (selectedJob) {
+                        let courses = courseRecommendations[selectedJob];
+                        if (courses && courses.length > 0) {
+                            // Filter/sort based on learning style (simple keyword match for demo)
+                            if (learningStyleText.includes("video") || learningStyleText.includes("tutorial")) {
+                                // Prioritize courses that might be video-heavy (simplified logic)
+                                courses.sort((a, b) => {
+                                    const aScore = (a.link.includes("youtube.com") || a.provider.toLowerCase().includes("udemy") || a.provider.toLowerCase().includes("linkedin learning")) ? 1 : 0;
+                                    const bScore = (b.link.includes("youtube.com") || b.provider.toLowerCase().includes("udemy") || b.provider.toLowerCase().includes("linkedin learning")) ? 1 : 0;
+                                    return bScore - aScore;
+                                });
+                            }
+                            // Could add more complex filtering for "hands-on", "project-based" etc.
+
+                            courseRecommendationsDiv.style.display = 'block';
+                            courses.forEach(course => {
+                                const item = document.createElement('div');
+                                item.className = 'result-item';
+                                item.innerHTML = `
+                                    <h4>${course.title}</h4>
+                                    <p><strong>Provider:</strong> ${course.provider}</p>
+                                    <div class="action-links">
+                                        <a href="${course.link}" target="_blank">View Course</a>
+                                    </div>
+                                `;
+                                courseRecommendationsList.appendChild(item);
+                            });
+                        } else {
+                            noCourseResults.textContent = `No specific course recommendations available for "${selectedJob}" yet. Try searching online platforms.`;
+                            noCourseResults.style.display = 'block';
+                        }
+                    } else {
+                        // If no job is selected
+                        noCourseResults.textContent = "Please select a job to find course recommendations.";
+                        noCourseResults.style.display = 'block';
+                    }
+                    courseRecommendationsDiv.scrollIntoView({ behavior: 'smooth' });
+                }, 2000); // Simulate network delay
+            });
+
+            // --- Tab Switching Logic ---
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+                    showTab(tabId);
+                });
+            });
+
+            clearJobRecommenderButton.addEventListener('click', clearJobRecommenderState);
+            clearCourseRecommenderButton.addEventListener('click', clearCourseRecommenderState);
+
+
+            // --- Initial Setup ---
+            showStep(0);
+            setWelcomeMessage();
+            setupWeightSliders();
+            setupPassionCheckboxLimit(); // This function is for step 2 of job recommender, not passions in general
+            populateDreamJobsSelect(); // Populate the dropdown for course recommender
+            clearAllFormsAndResults(); // Ensure all forms and results are clear on initial load
+        });
+    </script>
+</body>
+</html>
